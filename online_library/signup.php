@@ -58,14 +58,6 @@ include('includes/config.php');
     <link href="assets/css/style.css" rel="stylesheet" />
     <!-- GOOGLE FONT -->
     <!-- link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' / -->
-    <script type="text/javascript">
-        // On cree une fonction valid() sans paramètre qui renvoie 
-        // TRUE si les mots de passe saisis dans le formulaire sont identiques
-        // FALSE sinon
-
-        // On cree une fonction avec l'email passé en paramêtre et qui vérifie la disponibilité de l'email
-        // Cette fonction effectue un appel AJAX vers check_availability.php
-    </script>
 </head>
 
 <body>
@@ -89,17 +81,17 @@ include('includes/config.php');
         </div>
         <div class="form-group">
             <label for="password">Mot de passe</label>
-            <input type="text" name="password" required>
+            <input type="text" name="password" id="password" required>
         </div>
         <div class="form-group">
             <label for="checkPassword">Confimez le mot de passe</label>
-            <input type="text" name="checkPassword" required>
+            <input type="text" name="checkPassword" id="checkPassword" required><span id="message"></span>
         </div>
         <div class="form-group">
             <label for="vercode">Code de vérification</label>
             <input type="text" name="vercode" required><img src="captcha.php">
         </div>
-        <button type="submit" name="login" class="btn btn-info">Enregister</button>
+        <button type="submit" name="login" id="btnSubmit" class="btn btn-info">Enregister</button>
     </form>
     <!--A la suite de la zone de saisie du captcha, on insère l'image créée par captcha.php : <img src="captcha.php">  -->
     <!-- On appelle la fonction valid() dans la balise <form> onSubmit="return valid(); -->
@@ -110,6 +102,34 @@ include('includes/config.php');
     <?php include('includes/footer.php'); ?>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        // On cree une fonction valid() sans paramètre qui renvoie 
+        let valid = () => {
+            let message = document.getElementById("message")
+            let password = document.getElementById("password")
+            let checkPassword = document.getElementById('checkPassword')
+            checkPassword.addEventListener('keyup', () => {
+        if(password.value == checkPassword.value){
+            // TRUE si les mots de passe saisis dans le formulaire sont identiques
+            message.innerHTML = 'Valide';
+            message.style.color = 'green';
+            return message;
+        }
+        else{
+            // FALSE sinon
+            message.innerHTML = 'Invalide';
+            message.style.color = 'red';
+            return message;
+        }
+        })}
+        valid()
+        
+        // On cree une fonction avec l'email passé en paramêtre et qui vérifie la disponibilité de l'email
+        // Cette fonction effectue un appel AJAX vers check_availability.php
+        let checkavailability = () => {
+
+        }
+    </script>
 </body>
 
 </html>
