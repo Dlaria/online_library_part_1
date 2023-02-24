@@ -5,15 +5,13 @@ session_start();
 // On inclue le fichier de configuration et de connexion a la base de donnees
 include('includes/config.php');
 
-error_log(print_r($_SESSION, 1));
-
 // On invalide le cache de session
 if (isset($_SESSION['login']) && $_SESSION['login'] != '') {
 	$_SESSION['login'] = '';
 }
 
 if (TRUE === isset($_POST['login'])) {
-	// Apr�s la soumission du formulaire de login ($_POST['login'] existe - voir pourquoi plus bas)
+	// Après la soumission du formulaire de login ($_POST['login'] existe - voir pourquoi plus bas)
 	// On verifie si le code captcha est correct en comparant ce que l'utilisateur a saisi dans le formulaire
 	// $_POST["vercode"] et la valeur initialisee $_SESSION["vercode"] lors de l'appel a captcha.php (voir plus bas)
 	if ($_POST['vercode'] != $_SESSION['vercode']) {
@@ -27,18 +25,18 @@ if (TRUE === isset($_POST['login'])) {
 		$password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 		// On construit la requete SQL pour recuperer l'id, le readerId et l'email du lecteur � partir des deux variables ci-dessus
 		// dans la table tblreaders
-		$sql = "SELECT EmailId, Password, ReaderId, Status FROM tblreaders  WHERE EmailId = :email AND Password = :password";
+		$sql = "SELECT EmailId, Password, ReaderId, Status FROM tblreaders  WHERE EmailId = :email";
 		$query = $dbh->prepare($sql);
 		$query->bindParam(':email', $mail, PDO::PARAM_STR);
-		$query->bindParam(':password', $password, PDO::PARAM_STR);
 		// On execute la requete
 		$query->execute();
 		// On stocke le resultat de recherche dans une variable $result
 		$result = $query->fetch(PDO::FETCH_OBJ);
 
-		if (!empty($result)) {
-			// Si le resultat de recherche n'est pas vide
-			// On stocke l'identifiant du lecteur (ReaderId) dans $_SESSION['rdid']
+		// Si il y a qqchose dans result
+		// et si le mot de passe saisi est correct
+		if (!empty($result) && password_verify($_POST['password'], $result->Password)) {
+			// On stocke l'identifiant du lecteur (ReaderId dans $_SESSION)
 			$_SESSION['rdid'] = $result->ReaderId;
 
 			if ($result->Status == 1) {
