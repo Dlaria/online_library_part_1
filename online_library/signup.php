@@ -5,7 +5,7 @@ session_start();
 // On inclue le fichier de configuration et de connexion à la base de données
 include('includes/config.php');
 
-// Aaprès la soumission du formulaire de compte (plus bas dans ce fichier)
+// Après la soumission du formulaire de compte (plus bas dans ce fichier)
 // On vérifie si le code captcha est correct en comparant ce que l'utilisateur a saisi dans le formulaire
 // $_POST["vercode"] et la valeur initialisée $_SESSION["vercode"] lors de l'appel à captcha.php (voir plus bas)
 
@@ -72,7 +72,35 @@ include('includes/config.php');
     <!-- On inclue le fichier header.php qui contient le menu de navigation-->
     <?php include('includes/header.php'); ?>
     <!--On affiche le titre de la page : CREER UN COMPTE-->
+    <h3>CREER UN COMPTE</h3>
     <!--On affiche le formulaire de creation de compte-->
+    <form method="post" action="signup.php">
+        <div class="form-group">
+            <label for="allName">Entrez votre nom complet</label>
+            <input type="text" name="allName" required>
+        </div>
+        <div class="form-group">
+            <label for="portable">Portable</label>
+            <input type="text" name="portable" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="text" name="email" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Mot de passe</label>
+            <input type="text" name="password" required>
+        </div>
+        <div class="form-group">
+            <label for="checkPassword">Confimez le mot de passe</label>
+            <input type="text" name="checkPassword" required>
+        </div>
+        <div class="form-group">
+            <label for="vercode">Code de vérification</label>
+            <input type="text" name="vercode" required><img src="captcha.php">
+        </div>
+        <button type="submit" name="login" class="btn btn-info">Enregister</button>
+    </form>
     <!--A la suite de la zone de saisie du captcha, on insère l'image créée par captcha.php : <img src="captcha.php">  -->
     <!-- On appelle la fonction valid() dans la balise <form> onSubmit="return valid(); -->
     <!-- On appelle la fonction checkAvailability() dans la balise <input> de l'email onBlur="checkAvailability(this.value)" -->
