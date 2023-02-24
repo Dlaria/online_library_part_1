@@ -123,11 +123,11 @@ include('includes/config.php');
         }
         })}
         valid()
-        
+
         // On cree une fonction avec l'email passé en paramêtre et qui vérifie la disponibilité de l'email
         // Cette fonction effectue un appel AJAX vers check_availability.php
         let checkavailability = () => {
-
+            
         }
     </script>
 </body>
