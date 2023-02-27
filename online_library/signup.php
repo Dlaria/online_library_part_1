@@ -7,6 +7,7 @@ include('includes/config.php');
 
 // Après la soumission du formulaire de compte (plus bas dans ce fichier)
 // On vérifie si le code captcha est correct en comparant ce que l'utilisateur a saisi dans le formulaire
+
 // $_POST["vercode"] et la valeur initialisée $_SESSION["vercode"] lors de l'appel à captcha.php (voir plus bas)
 
 //On lit le contenu du fichier readerid.txt au moyen de la fonction 'file'. Ce fichier contient le dernier identifiant lecteur cree.
@@ -108,7 +109,7 @@ include('includes/config.php');
             let message = document.getElementById("message")
             let password = document.getElementById("password")
             let checkPassword = document.getElementById('checkPassword')
-            if(password.value == checkPassword.value){
+            if(password.value === checkPassword.value){
             // TRUE si les mots de passe saisis dans le formulaire sont identiques
         }
         else{
@@ -123,8 +124,11 @@ include('includes/config.php');
         // Cette fonction effectue un appel AJAX vers check_availability.php
         let email = "<?php echo $_POST['email'];?>";
         let checkAvailability = (email) => {
-            console.log(email)
-            
+            //console.log(email)
+            const xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "check_availability.php?q="+email);
+            xhttp.send()
+            //console.log(xhttp)            
         }
     </script>
 </body>
