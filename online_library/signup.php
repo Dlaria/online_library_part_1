@@ -5,38 +5,76 @@ session_start();
 // On inclue le fichier de configuration et de connexion à la base de données
 include('includes/config.php');
 
+if (isset($_SESSION['login']) && $_SESSION['login'] != '') {
+	$_SESSION['login'] = '';
+}
 // Après la soumission du formulaire de compte (plus bas dans ce fichier)
 // On vérifie si le code captcha est correct en comparant ce que l'utilisateur a saisi dans le formulaire
-
 // $_POST["vercode"] et la valeur initialisée $_SESSION["vercode"] lors de l'appel à captcha.php (voir plus bas)
+if (true === isset($_POST['login'])){
+if ($_POST['vercode'] != $_SESSION['vercode']){
+    echo "<script>alert('Code de vérification incorrect')</script>";
+}else{
+    //On lit le contenu du fichier readerid.txt au moyen de la fonction 'file'. Ce fichier contient le dernier identifiant lecteur cree.
+    $file_readerid = file('http://localhost/online_library_part_1/online_library/readerid.txt');
+    foreach ($file_readerid as $reader_id) {
+        // On incrémente de 1 la valeur lue
+        $reader_id++;
+        // On ouvre le fichier readerid.txt en écriture
+        $fichier = fopen("readerid.txt", "c+b");
+        // On écrit dans ce fichier la nouvelle valeur
+        fwrite($fichier, $reader_id);
+        // On referme le fichier
+        fclose($fichier);
 
-//On lit le contenu du fichier readerid.txt au moyen de la fonction 'file'. Ce fichier contient le dernier identifiant lecteur cree.
+        // echo $reader_id;
+    }
+    // On récupère le nom saisi par le lecteur
+    $reader_name = $_POST['fullName'];
+    // On récupère le numéro de portable
+    $reader_mobile = $_POST['portable'];
+    // On récupère l'email
+    $reader_email = $_POST['email'];
+    // On récupère le mot de passe
+    $reader_password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    // On fixe le statut du lecteur à 1 par défaut (actif)
+    $reader_status = 1;
+    // On prépare la requete d'insertion en base de données de toutes ces valeurs dans la table tblreaders
+    $sql = "INSERT INTO tblreaders (ReaderId, FullName, EmailId, MobileNumber, Password, Status)
+    VALUE (:reader_id, :reader_name, :reader_email, :reader_mobile, :reader_password, :reader_status)";
+    $query = $dbh->prepare($sql);
+    $query->bindParam(":reader_id", $reader_id,PDO::PARAM_STR);
+    $query->bindParam(":reader_name",$reader_name,PDO::PARAM_STR);
+    $query->bindParam(":reader_email",$reader_email,PDO::PARAM_STR);
+    $query->bindParam(":reader_mobile",$reader_mobile,PDO::PARAM_STR);
+    $query->bindParam(":reader_password",$reader_password,PDO::PARAM_STR);
+    $query->bindParam(":reader_status",$reader_status,PDO::PARAM_INT);
+    // On éxecute la requete
+    $query->execute();
 
-// On incrémente de 1 la valeur lue
+    // On récupère le dernier id inséré en bd (fonction lastInsertId)
+    $hit = $dbh->lastInsertId();
+    if ($hit !== null){
+        // Si ce dernier id existe, on affiche dans une pop-up que l'opération s'est bien déroulée, et on affiche l'identifiant lecteur (valeur de $hit[0])
+        echo '<script>alert("L\'opération s\'est bien déroulée Id: '.$hit.'")</script>';
+    }else{
+        echo '<script>alert("L\'opération ne s\'est pas bien déroulée")</script>';
+    }
+}
+}
 
-// On ouvre le fichier readerid.txt en écriture
 
-// On écrit dans ce fichier la nouvelle valeur
 
-// On referme le fichier
 
-// On récupère le nom saisi par le lecteur
 
-// On récupère le numéro de portable
 
-// On récupère l'email
 
-// On récupère le mot de passe
 
-// On fixe le statut du lecteur à 1 par défaut (actif)
 
-// On prépare la requete d'insertion en base de données de toutes ces valeurs dans la table tblreaders
 
-// On éxecute la requete
 
-// On récupère le dernier id inséré en bd (fonction lastInsertId)
 
-// Si ce dernier id existe, on affiche dans une pop-up que l'opération s'est bien déroulée, et on affiche l'identifiant lecteur (valeur de $hit[0])
+
 
 // Sinon on affiche qu'il y a eu un problème
 ?>
@@ -71,7 +109,7 @@ include('includes/config.php');
     <form method="post" action="signup.php" onSubmit="return valid();">
         <div class="form-group">
             <label for="allName">Entrez votre nom complet</label>
-            <input type="text" name="allName" required>
+            <input type="text" name="fullName" required>
         </div>
         <div class="form-group">
             <label for="portable">Portable</label>
