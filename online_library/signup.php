@@ -66,7 +66,8 @@ include('includes/config.php');
     <!--On affiche le titre de la page : CREER UN COMPTE-->
     <h3>CREER UN COMPTE</h3>
     <!--On affiche le formulaire de creation de compte-->
-    <form method="post" action="signup.php">
+    <!-- On appelle la fonction valid() dans la balise <form> onSubmit="return valid(); -->
+    <form method="post" action="signup.php" onSubmit="return valid();">
         <div class="form-group">
             <label for="allName">Entrez votre nom complet</label>
             <input type="text" name="allName" required>
@@ -77,27 +78,26 @@ include('includes/config.php');
         </div>
         <div class="form-group">
             <label for="email">Email</label>
-            <input type="text" name="email" required>
+            <input type="text" name="email" onBlur="checkAvailability(this.value);" required>
         </div>
         <div class="form-group">
             <label for="password">Mot de passe</label>
-            <input type="text" name="password" id="password" required>
+            <input type="password" name="password" id="password" required>
         </div>
         <div class="form-group">
             <label for="checkPassword">Confimez le mot de passe</label>
-            <input type="text" name="checkPassword" id="checkPassword" required><span id="message"></span>
+            <input type="password" name="checkPassword" id="checkPassword" required><span id="message"></span>
         </div>
         <div class="form-group">
+            <!--A la suite de la zone de saisie du captcha, on insère l'image créée par captcha.php : <img src="captcha.php">  -->
             <label for="vercode">Code de vérification</label>
             <input type="text" name="vercode" required><img src="captcha.php">
         </div>
-        <button type="submit" name="login" id="btnSubmit" class="btn btn-info">Enregister</button>
+        <input type="submit" name="login" id="btnSubmit" class="btn btn-info" value = "Enregister"/>
     </form>
-    <!--A la suite de la zone de saisie du captcha, on insère l'image créée par captcha.php : <img src="captcha.php">  -->
-    <!-- On appelle la fonction valid() dans la balise <form> onSubmit="return valid(); -->
+    
+    
     <!-- On appelle la fonction checkAvailability() dans la balise <input> de l'email onBlur="checkAvailability(this.value)" -->
-
-
 
     <?php include('includes/footer.php'); ?>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
@@ -108,25 +108,22 @@ include('includes/config.php');
             let message = document.getElementById("message")
             let password = document.getElementById("password")
             let checkPassword = document.getElementById('checkPassword')
-            checkPassword.addEventListener('keyup', () => {
-        if(password.value == checkPassword.value){
+            if(password.value == checkPassword.value){
             // TRUE si les mots de passe saisis dans le formulaire sont identiques
-            message.innerHTML = 'Valide';
-            message.style.color = 'green';
-            return message;
         }
         else{
             // FALSE sinon
             message.innerHTML = 'Invalide';
             message.style.color = 'red';
-            return message;
+            return false;
         }
-        })}
-        valid()
+        }
 
         // On cree une fonction avec l'email passé en paramêtre et qui vérifie la disponibilité de l'email
         // Cette fonction effectue un appel AJAX vers check_availability.php
-        let checkavailability = () => {
+        let email = "<?php echo $_POST['email'];?>";
+        let checkAvailability = (email) => {
+            console.log(email)
             
         }
     </script>
