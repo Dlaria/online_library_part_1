@@ -58,26 +58,9 @@ if ($_POST['vercode'] != $_SESSION['vercode']){
         // Si ce dernier id existe, on affiche dans une pop-up que l'opération s'est bien déroulée, et on affiche l'identifiant lecteur (valeur de $hit[0])
         echo '<script>alert("L\'opération s\'est bien déroulée Id: '.$hit.'")</script>';
     }else{
+        // Sinon on affiche qu'il y a eu un problème
         echo '<script>alert("L\'opération ne s\'est pas bien déroulée")</script>';
-    }
-}
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Sinon on affiche qu'il y a eu un problème
-?>
+}}}?>
 
 <!DOCTYPE html>
 <html lang="FR">
@@ -117,7 +100,7 @@ if ($_POST['vercode'] != $_SESSION['vercode']){
         </div>
         <div class="form-group">
             <label for="email">Email</label>
-            <input type="text" name="email" onBlur="checkAvailability(this.value);" required>
+            <input type="text" name="email" onBlur="checkAvailability(this.value);" required><span id="verif"></span>
         </div>
         <div class="form-group">
             <label for="password">Mot de passe</label>
@@ -132,7 +115,7 @@ if ($_POST['vercode'] != $_SESSION['vercode']){
             <label for="vercode">Code de vérification</label>
             <input type="text" name="vercode" required><img src="captcha.php">
         </div>
-        <input type="submit" name="login" id="btnSubmit" class="btn btn-info" value = "Enregister"/>
+        <input type="submit" name="login" id="btnSubmit" class="btn btn-info" value ="Enregister"/>
     </form>
     
     
@@ -160,14 +143,24 @@ if ($_POST['vercode'] != $_SESSION['vercode']){
 
         // On cree une fonction avec l'email passé en paramêtre et qui vérifie la disponibilité de l'email
         // Cette fonction effectue un appel AJAX vers check_availability.php
-        let email = "<?php echo $_POST['email'];?>";
         let checkAvailability = (email) => {
-            //console.log(email)
+            console.log(email);
+            let btnSubmit = document.getElementById('btnSubmit');
+            if (email.length != 0){
             const xhttp = new XMLHttpRequest();
-            xhttp.open("GET", "check_availability.php?q="+email);
-            xhttp.send()
-            //console.log(xhttp)            
+            xhttp.onload = function(){
+                document.getElementById("verif").innerHTML = this.responseText;
+                if(this.responseText === "Cette adresse mail existe déjà"){
+                    btnSubmit.setAttribute('disabled',false);
+                }else{
+                    btnSubmit.removeAttribute('disabled',false);
+                }
+            }
+            xhttp.open("GET", "check_availability.php?email="+email,true);
+            xhttp.send();
+            //console.log(xhttp)       
         }
+    }
     </script>
 </body>
 
