@@ -44,7 +44,7 @@ if (TRUE === isset($_POST['login'])) {
 				// On stocke l'email du lecteur dans $_SESSION['login']
 				$_SESSION['login'] = $_POST['emailid'];
 				// l'utilisateur est redirige vers dashboard.php
-				header('location:dashbord.php');
+				header('location:dashboard.php');
 			} else {
 				// Sinon le compte du lecteur a ete bloque. On informe l'utilisateur par un popu
 				echo "<script>alert('Votre compte à été bloqué')</script>";
