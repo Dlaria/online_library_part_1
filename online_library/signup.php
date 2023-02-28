@@ -80,6 +80,46 @@ if ($_POST['vercode'] != $_SESSION['vercode']){
     <link href="assets/css/style.css" rel="stylesheet" />
     <!-- GOOGLE FONT -->
     <!-- link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' / -->
+    <script type="text/javascript">
+        // On cree une fonction valid() sans paramètre qui renvoie 
+        let valid = () => {
+            let message = document.getElementById("message")
+            let password = document.getElementById("password")
+            let checkPassword = document.getElementById('checkPassword')
+            if(password.value === checkPassword.value){
+            // TRUE si les mots de passe saisis dans le formulaire sont identiques
+            return true;
+        }
+        else{
+            // FALSE sinon
+            message.innerHTML = 'Invalide';
+            message.style.color = 'red';
+            return false;
+        }
+        }
+
+        // On cree une fonction avec l'email passé en paramêtre et qui vérifie la disponibilité de l'email
+        // Cette fonction effectue un appel AJAX vers check_availability.php
+        let checkAvailability = (email) => {
+            console.log(email);
+            let btnSubmit = document.getElementById('btnSubmit');
+            if (email.length != 0){
+                //      ===Voir en méthode fetch()===
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function(){
+                document.getElementById("verif").innerHTML = this.responseText;
+                if(this.responseText === "Cette adresse mail existe déjà"){
+                    btnSubmit.setAttribute('disabled',false);
+                }else{
+                    btnSubmit.removeAttribute('disabled',false);
+                }
+            }
+            xhttp.open("GET", "check_availability.php?email="+email,true);
+            xhttp.send();
+            //console.log(xhttp)
+        }
+    }
+    </script>
 </head>
 
 <body>
@@ -124,44 +164,6 @@ if ($_POST['vercode'] != $_SESSION['vercode']){
     <?php include('includes/footer.php'); ?>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script type="text/javascript">
-        // On cree une fonction valid() sans paramètre qui renvoie 
-        let valid = () => {
-            let message = document.getElementById("message")
-            let password = document.getElementById("password")
-            let checkPassword = document.getElementById('checkPassword')
-            if(password.value === checkPassword.value){
-            // TRUE si les mots de passe saisis dans le formulaire sont identiques
-        }
-        else{
-            // FALSE sinon
-            message.innerHTML = 'Invalide';
-            message.style.color = 'red';
-            return false;
-        }
-        }
-
-        // On cree une fonction avec l'email passé en paramêtre et qui vérifie la disponibilité de l'email
-        // Cette fonction effectue un appel AJAX vers check_availability.php
-        let checkAvailability = (email) => {
-            console.log(email);
-            let btnSubmit = document.getElementById('btnSubmit');
-            if (email.length != 0){
-            const xhttp = new XMLHttpRequest();
-            xhttp.onload = function(){
-                document.getElementById("verif").innerHTML = this.responseText;
-                if(this.responseText === "Cette adresse mail existe déjà"){
-                    btnSubmit.setAttribute('disabled',false);
-                }else{
-                    btnSubmit.removeAttribute('disabled',false);
-                }
-            }
-            xhttp.open("GET", "check_availability.php?email="+email,true);
-            xhttp.send();
-            //console.log(xhttp)       
-        }
-    }
-    </script>
 </body>
 
 </html>
