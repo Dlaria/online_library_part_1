@@ -87,34 +87,44 @@ if (true === isset($_POST['login'])){
      <!--On inclue ici le menu de navigation includes/header.php-->
      <?php include('includes/header.php'); ?>
      <!-- On insere le titre de la page (RECUPERATION MOT DE PASSE -->
-     <h3>RECUPERATION MOT DE PASSE</h3>
+     <div class="container">
+          <div class="row">
+                    <div class="col">
+                         <h3>RECUPERATION MOT DE PASSE</h3>
+                    </div>
+               </div>
 
-     <!--On insere le formulaire de recuperation-->
-     <!--L'appel de la fonction valid() se fait dans la balise <form> au moyen de la propri�t� onSubmit="return valid();"-->
-     <form action="user-forgot-password.php" method="post" onSubmit="return valid();">
-          <div class="form-group">
-               <label for="email">Email</label>
-               <input type="text" name="email" required>
+          <!--On insere le formulaire de recuperation-->
+          <!--L'appel de la fonction valid() se fait dans la balise <form> au moyen de la propri�t� onSubmit="return valid();"-->
+          <div class="row">
+               <div class="col-xs-12 col-sm-6 col-md-6 col-lg-8 offset-md-3">
+                    <form action="user-forgot-password.php" method="post" onSubmit="return valid();">
+                         <div class="form-group">
+                              <label for="email">Email</label>
+                              <input type="text" name="email" required>
+                         </div>
+                         <div class="form-group">
+                              <label for="portable">Portable</label>
+                              <input type="text" name="portable" required>
+                         </div>
+                    <div class="form-group">
+                         <label for="password">Nouveau Mot de passe</label>
+                         <input type="password" name="password" id="password" required>
+                    </div>
+                    <div class="form-group">
+                         <label for="checkPassword">Confimez le mot de passe</label>
+                         <input type="password" name="checkPassword" id="checkPassword" required><span id="message"></span>
+                    </div>
+                    <div class="form-group">
+                         <!--A la suite de la zone de saisie du captcha, on insère l'image créée par captcha.php : <img src="captcha.php">  -->
+                         <label for="vercode">Code de vérification</label>
+                         <input type="text" name="vercode" required style="height:25px;">&nbsp;&nbsp;&nbsp;<img src="captcha.php">
+                    </div>
+                    <input type="submit" name="login" id="btnSubmit" class="btn btn-info" value ="Envoyer"/>|<a href="index.php">Login</a>
+                    </form>
+               </div>
           </div>
-          <div class="form-group">
-                 <label for="portable">Portable</label>
-                 <input type="text" name="portable" required>
-             </div>
-        <div class="form-group">
-            <label for="password">Mot de passe</label>
-            <input type="password" name="password" id="password" required>
-        </div>
-        <div class="form-group">
-            <label for="checkPassword">Confimez le mot de passe</label>
-            <input type="password" name="checkPassword" id="checkPassword" required><span id="message"></span>
-        </div>
-        <div class="form-group">
-            <!--A la suite de la zone de saisie du captcha, on insère l'image créée par captcha.php : <img src="captcha.php">  -->
-            <label for="vercode">Code de vérification</label>
-            <input type="text" name="vercode" required><img src="captcha.php">
-        </div>
-        <input type="submit" name="login" id="btnSubmit" class="btn btn-info" value ="Enregister"/>
-     </form>
+     </div>
 
 
      <?php include('includes/footer.php'); ?>

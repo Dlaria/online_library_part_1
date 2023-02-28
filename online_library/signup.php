@@ -126,37 +126,47 @@ if ($_POST['vercode'] != $_SESSION['vercode']){
     <!-- On inclue le fichier header.php qui contient le menu de navigation-->
     <?php include('includes/header.php'); ?>
     <!--On affiche le titre de la page : CREER UN COMPTE-->
-    <h3>CREER UN COMPTE</h3>
-    <!--On affiche le formulaire de creation de compte-->
-    <!-- On appelle la fonction valid() dans la balise <form> onSubmit="return valid(); -->
-    <form method="post" action="signup.php" onSubmit="return valid();">
-        <div class="form-group">
-            <label for="allName">Entrez votre nom complet</label>
-            <input type="text" name="fullName" required>
+    <div class="container">
+        <div class="row">
+                <div class="col">
+                    <h3>CREER UN COMPTE</h3>
+                </div>
+            </div>
+        <!--On affiche le formulaire de creation de compte-->
+        <!-- On appelle la fonction valid() dans la balise <form> onSubmit="return valid(); -->
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-8 offset-md-3">
+                <form method="post" action="signup.php" onSubmit="return valid();">
+                    <div class="form-group">
+                        <label for="allName">Entrez votre nom complet</label>
+                        <input type="text" name="fullName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="portable">Portable</label>
+                        <input type="text" name="portable" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="text" name="email" onBlur="checkAvailability(this.value);" required><span id="verif"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Mot de passe</label>
+                        <input type="password" name="password" id="password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="checkPassword">Confimez le mot de passe</label>
+                        <input type="password" name="checkPassword" id="checkPassword" required><span id="message"></span>
+                    </div>
+                    <div class="form-group">
+                        <!--A la suite de la zone de saisie du captcha, on insère l'image créée par captcha.php : <img src="captcha.php">  -->
+                        <label for="vercode">Code de vérification</label>
+                        <input type="text" name="vercode" required style="height:25px;">&nbsp;&nbsp;&nbsp;<img src="captcha.php">
+                    </div>
+                    <input type="submit" name="login" id="btnSubmit" class="btn btn-info" value ="Enregister"/>
+                </form>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="portable">Portable</label>
-            <input type="text" name="portable" required>
-        </div>
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="text" name="email" onBlur="checkAvailability(this.value);" required><span id="verif"></span>
-        </div>
-        <div class="form-group">
-            <label for="password">Mot de passe</label>
-            <input type="password" name="password" id="password" required>
-        </div>
-        <div class="form-group">
-            <label for="checkPassword">Confimez le mot de passe</label>
-            <input type="password" name="checkPassword" id="checkPassword" required><span id="message"></span>
-        </div>
-        <div class="form-group">
-            <!--A la suite de la zone de saisie du captcha, on insère l'image créée par captcha.php : <img src="captcha.php">  -->
-            <label for="vercode">Code de vérification</label>
-            <input type="text" name="vercode" required><img src="captcha.php">
-        </div>
-        <input type="submit" name="login" id="btnSubmit" class="btn btn-info" value ="Enregister"/>
-    </form>
+    </div>
     
     
     <!-- On appelle la fonction checkAvailability() dans la balise <input> de l'email onBlur="checkAvailability(this.value)" -->
