@@ -11,7 +11,18 @@ if(strlen($_SESSION['login'])==0){
     header('location:index.php');
 }else{
     // Sinon on peut continuer
+    //var_dump($_SESSION);
+    $readerId = $_SESSION['rdid'];
+    $sqlReader = "SELECT BookId, IssuesDate, ReturnDate FROM tblissuedbookdetails WHERE ReaderId=:readerId";
+    $query = $dbh->prepare($sqlReader);
+    $query->bindParam(':readerId',$readerId,PDO::PARAM_STR);
+    $query->execute();
+    
+    
+    //var_dump($result);
 
+    
+    //var_dump($reponse);
 }
 //	Si le bouton de suppression a ete clique($_GET['del'] existe)
 		//On recupere l'identifiant du livre
@@ -62,9 +73,34 @@ if(strlen($_SESSION['login'])==0){
                 Date de retour
             </th>
         </tr>
-    </table>
-           <!-- On affiche la liste des sorties contenus dans $results sous la forme d'un tableau -->
-           
+        <!-- On affiche la liste des sorties contenus dans $results sous la forme d'un tableau -->
+        <?php 
+           $lineNumber = 0;
+           while ($result = $query->fetch()){
+            $bookId = $result['BookId'];
+            $sql = "SELECT BookName, ISBNNumber FROM tblbooks WHERE ISBNNumber=:bookId";
+            $query2 = $dbh->prepare($sql);
+            $query2->bindParam(':bookId',$bookId,PDO::PARAM_STR);
+            $query2->execute();
+            $reponse = $query2->fetch();
+               $lineNumber++;
+               ?>
+            <tr>
+                <td><?php echo $lineNumber; ?></td>
+                <td><?php echo $reponse['BookName'];?></td>
+                <td><?php echo $reponse['ISBNNumber'];?></td>
+                <td><?php echo $result['IssuesDate']; ?></td>
+
+                <td><?php if (empty($result['ReturnDate'])){
+                    echo 'Non retourné';
+                }else{
+                    echo $result['ReturnDate']; 
+                } ?></td>
+            </tr>
+            <?php
+        }
+        ?>
+        </table>
            <!-- Si il n'y a pas de date de retour, on affiche non retourne --> 
 
 
