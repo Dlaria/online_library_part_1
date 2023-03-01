@@ -1,12 +1,18 @@
 <?php
-// On récupère la session courante
+// On rï¿½cupï¿½re la session courante
 session_start();
 
-// On inclue le fichier de configuration et de connexion à la base de données
+// On inclue le fichier de configuration et de connexion ï¿½ la base de donnï¿½es
 include('includes/config.php');
 
 // Si l'utilisateur n'est pas connecte, on le dirige vers la page de login
-// Sinon on peut continuer
+if(strlen($_SESSION['login'])==0){
+    // On le redirige vers la page de login
+    header('location:index.php');
+}else{
+    // Sinon on peut continuer
+
+}
 //	Si le bouton de suppression a ete clique($_GET['del'] existe)
 		//On recupere l'identifiant du livre
 		// On supprime le livre en base
@@ -31,9 +37,34 @@ include('includes/config.php');
       <!--On insere ici le menu de navigation T-->
 <?php include('includes/header.php');?>
 	<!-- On affiche le titre de la page : LIVRES SORTIS --> 
-
-           <!-- On affiche le titre de la page : LIVRES SORTIS -->      
+    <div class="container">
+       <div class="row">
+           <div class="col">
+               <h3>LIVRES SORTIS</h3>
+           </div>
+       </div>     
+    </div>     
+    <table>
+        <tr>
+            <th>
+                #
+            </th>
+            <th>
+                Titre
+            </th>
+            <th>
+                ISBN
+            </th>
+            <th>
+                Date de sortie
+            </th>
+            <th>
+                Date de retour
+            </th>
+        </tr>
+    </table>
            <!-- On affiche la liste des sorties contenus dans $results sous la forme d'un tableau -->
+           
            <!-- Si il n'y a pas de date de retour, on affiche non retourne --> 
 
 
