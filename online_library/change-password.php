@@ -114,9 +114,10 @@ if(strlen($_SESSION['login'])==0){
         <?php 
     }
     ?>     
-	<!--On affiche le formulaire-->
 	<div class="row">
-               <div class="col-xs-12 col-sm-6 col-md-6 col-lg-8 offset-md-3">
+		<div class="col-xs-12 col-sm-6 col-md-6 col-lg-8 offset-md-3">
+				   <!--On affiche le formulaire-->
+				   <!-- la fonction de validation de mot de passe est appelee dans la balise form : onSubmit="return valid();"-->
                     <form action="change-password.php" method="post" onSubmit="return valid();">
                          <div class="form-group">
                               <label for="password">Mot de passe actuel</label>
@@ -136,7 +137,6 @@ if(strlen($_SESSION['login'])==0){
           </div>
     </div>
 
-	<!-- la fonction de validation de mot de passe est appelee dans la balise form : onSubmit="return valid();"-->
 
 
 	<?php include('includes/footer.php'); ?>

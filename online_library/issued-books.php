@@ -55,23 +55,13 @@ if(strlen($_SESSION['login'])==0){
            </div>
        </div>     
     </div>     
-    <table>
+    <table >
         <tr>
-            <th>
-                #
-            </th>
-            <th>
-                Titre
-            </th>
-            <th>
-                ISBN
-            </th>
-            <th>
-                Date de sortie
-            </th>
-            <th>
-                Date de retour
-            </th>
+            <th class="fa-border">#</th>
+            <th class="fa-border">Titre</th>
+            <th class="fa-border">ISBN</th>
+            <th class="fa-border">Date de sortie</th>
+            <th class="fa-border">Date de retour</th>
         </tr>
         <!-- On affiche la liste des sorties contenus dans $results sous la forme d'un tableau -->
         <?php 
@@ -86,12 +76,13 @@ if(strlen($_SESSION['login'])==0){
                $lineNumber++;
                ?>
             <tr>
-                <td><?php echo $lineNumber; ?></td>
-                <td><?php echo $reponse['BookName'];?></td>
-                <td><?php echo $reponse['ISBNNumber'];?></td>
-                <td><?php echo $result['IssuesDate']; ?></td>
+                <td class="fa-border"><?php echo $lineNumber; ?></td>
+                <td class="fa-border"><?php echo $reponse['BookName'];?></td>
+                <td class="fa-border"><?php echo $reponse['ISBNNumber'];?></td>
+                <td class="fa-border"><?php echo $result['IssuesDate']; ?></td>
 
-                <td><?php if (empty($result['ReturnDate'])){
+                <!-- Si il n'y a pas de date de retour, on affiche non retourne --> 
+                <td class="fa-border"><?php if (empty($result['ReturnDate'])){
                     echo 'Non retourné';
                 }else{
                     echo $result['ReturnDate']; 
@@ -101,7 +92,6 @@ if(strlen($_SESSION['login'])==0){
         }
         ?>
         </table>
-           <!-- Si il n'y a pas de date de retour, on affiche non retourne --> 
 
 
   <?php include('includes/footer.php');?>

@@ -105,8 +105,11 @@ if ($_POST['vercode'] != $_SESSION['vercode']){
             let btnSubmit = document.getElementById('btnSubmit');
             if (email.length != 0){
                 //      ===Voir en méthode fetch()===
+            //Création d'un nouvel objet XMLHttpRequest()
             const xhttp = new XMLHttpRequest();
+            //Définition d'un fonction à appeler lorsque la demande est chargée
             xhttp.onload = function(){
+                //responseText renvoie la réponse du serveur sous forme d'une chaîne de caractère
                 document.getElementById("verif").innerHTML = this.responseText;
                 if(this.responseText === "Cette adresse mail existe déjà"){
                     btnSubmit.setAttribute('disabled',false);
@@ -114,7 +117,11 @@ if ($_POST['vercode'] != $_SESSION['vercode']){
                     btnSubmit.removeAttribute('disabled',false);
                 }
             }
+            //@param GET spécifie la méthode de requete 
+            //@param true spécifie que la requete est asynchrone
+            //comme ça javascript n'a pas à attrendre la réponse du serveur
             xhttp.open("GET", "check_availability.php?email="+email,true);
+            //Envoie la requete au serveur
             xhttp.send();
             //console.log(xhttp)
         }
