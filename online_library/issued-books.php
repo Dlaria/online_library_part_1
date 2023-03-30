@@ -88,9 +88,7 @@ if(strlen($_SESSION['login'])==0){
                     echo $result['ReturnDate']; 
                 } ?></td>
             </tr>
-            <?php
-        }
-        ?>
+            <?php } ?>
         </table>
 
 

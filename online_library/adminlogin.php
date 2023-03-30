@@ -37,7 +37,9 @@ if (true === isset($_POST['login'])){
             // Si le resultat de recherche n'est pas vide 
             // On stocke le nom de l'utilisateur  $_POST['username'] en session $_SESSION
             // On redirige l'utilisateur vers le tableau de bord administration (n'existe pas encore)
-            header('location:admin.php');
+            $_SESSION['alogin'] = $_POST['name'];
+            // header('location:online_library_part_2/dashboard.php');
+            echo "<script>document.location.href='http://localhost/online_library_part_2/admin/dashboard.php';</script>";
 
         }else{
             // sinon le login est refuse. On le signal par une popup

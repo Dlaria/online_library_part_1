@@ -109,6 +109,7 @@ if ($_POST['vercode'] != $_SESSION['vercode']){
             const xhttp = new XMLHttpRequest();
             //Définition d'un fonction à appeler lorsque la demande est chargée
             xhttp.onload = function(){
+                
                 //responseText renvoie la réponse du serveur sous forme d'une chaîne de caractère
                 document.getElementById("verif").innerHTML = this.responseText;
                 if(this.responseText === "Cette adresse mail existe déjà"){
@@ -143,7 +144,7 @@ if ($_POST['vercode'] != $_SESSION['vercode']){
         <!-- On appelle la fonction valid() dans la balise <form> onSubmit="return valid(); -->
         <div class="row">
             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-8 offset-md-3">
-                <form method="post" action="signup.php" onSubmit="return valid();">
+                <form method="post" action="<?= htmlspecialchars($_SERVER['PHP_SELF']);?>" onSubmit="return valid();">
                     <div class="form-group">
                         <label for="allName">Entrez votre nom complet</label>
                         <input type="text" name="fullName" required>
