@@ -20,30 +20,32 @@ if (true === isset($_POST['login'])){
     }else{
         // Le code est correct, on peut continuer
         // On recupere le nom de l'utilisateur saisi dans le formulaire
-        $name = $_POST['name'];
-        // On recupere le mot de passe saisi par l'utilisateur et on le crypte (fonction md5)
-        $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+        if (preg_match("/^[a-zA-Z-' çèé]*$/",$_POST['name']) && strlen($_POST['name']) <= 20){
+            $name = valid_donnee($_POST['name']);
+            // On recupere le mot de passe saisi par l'utilisateur et on le crypte (fonction md5)
+            $password = password_hash(valid_donnee($_POST['password']), PASSWORD_DEFAULT);
 
-        // On construit la requete qui permet de retrouver l'utilisateur a partir de son nom et de son mot de passe
-        // depuis la table admin
-        $sql = "SELECT UserName, Password FROM admin WHERE UserName=:name";
-        $query = $dbh->prepare($sql);
-        $query->bindParam(':name',$name,PDO::PARAM_STR);
-        $query->execute();
+            // On construit la requete qui permet de retrouver l'utilisateur a partir de son nom et de son mot de passe
+            // depuis la table admin
+            $sql = "SELECT UserName, Password FROM admin WHERE UserName=:name";
+            $query = $dbh->prepare($sql);
+            $query->bindParam(':name',$name,PDO::PARAM_STR);
+            $query->execute();
 
-        $result = $query->fetch(PDO::FETCH_OBJ);
+            $result = $query->fetch(PDO::FETCH_OBJ);
 
-        if (!empty($result) && password_verify($_POST['password'], $result->Password)){
-            // Si le resultat de recherche n'est pas vide 
-            // On stocke le nom de l'utilisateur  $_POST['username'] en session $_SESSION
-            // On redirige l'utilisateur vers le tableau de bord administration (n'existe pas encore)
-            $_SESSION['alogin'] = $_POST['name'];
-            // header('location:online_library_part_2/dashboard.php');
-            echo "<script>document.location.href='http://localhost/online_library_part_2/admin/dashboard.php';</script>";
+            if (!empty($result) && password_verify(valid_donnee($_POST['password']), $result->Password)){
+                // Si le resultat de recherche n'est pas vide 
+                // On stocke le nom de l'utilisateur  $_POST['username'] en session $_SESSION
+                // On redirige l'utilisateur vers le tableau de bord administration (n'existe pas encore)
+                $_SESSION['alogin'] = valid_donnee($_POST['name']);
+                // header('location:online_library_part_2/dashboard.php');
+                echo "<script>document.location.href='http://localhost/online_library_part_2/admin/dashboard.php';</script>";
 
-        }else{
-            // sinon le login est refuse. On le signal par une popup
-            echo "<script>alert('Utilisateur inconnu')</script>";
+            }else{
+                // sinon le login est refuse. On le signal par une popup
+                echo "<script>alert('Utilisateur inconnu')</script>";
+            }
         }
     }
 }
@@ -78,7 +80,7 @@ if (true === isset($_POST['login'])){
         <!--On affiche le formulaire de login-->
         <div class="row">
 		    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-8 offset-md-3">
-                <form action="adminlogin.php" method="post">
+                <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post">
                 <div class="form-group">
                     <label for="name">Entrez votre nom</label>
                     <input type="text" name="name" required>
